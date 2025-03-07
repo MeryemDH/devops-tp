@@ -12,8 +12,18 @@ jobs:
       matrix:
         python-version: [3.8, 3.9]
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
-      - run: pip install -r hello-devops/requirements.txt
-      - run: python -m pytest
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: hello-devops
+
+      - name: Run tests
+        run: python -m pytest
+        working-directory: hello-devops
